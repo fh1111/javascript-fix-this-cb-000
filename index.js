@@ -9,7 +9,7 @@ var cake = {
     var status = "Decorating with " + this.topping + ". Ready to eat soon!"
     updateFunction(status)
     setTimeout(() => {
-      updateFunction(serve.apply(this, ["Happy Eating!", this.customer]))
+      updateFunction(serve.apply(this, "Happy Eating!", this.customer))
     }, 2000)
   }
 }
@@ -38,18 +38,17 @@ function updateStatus(statusText) {
   this.getElementsByClassName("status")[0].innerText = statusText
 }
 
+function bake(updateFunction) {
+  var status = "Baking at " + this.bakeTemp + " for " + this.bakeTime
+  setTimeout(function() {
+    cool.call(this,updateFunction)
+  }, 2000)
+}
+
 function mix(updateFunction) {
   var status = "Mixing " + this.ingredients.join(", ")
   setTimeout(() => {
     bake.call(this, updateFunction)
-  }, 2000)
-  updateFunction(status)
-}
-
-function bake(updateFunction) {
-  var status = "Baking at " + this.bakeTemp + " for " + this.bakeTime
-  setTimeout(() => {
-    cool.call(this, updateFunction)
   }, 2000)
   updateFunction(status)
 }
@@ -63,6 +62,8 @@ function cool(updateFunction) {
 }
 
 function makeDessert() {
+  //add code here to decide which make... function to call
+  //based on which link was clicked
   if(this.parentNode.id === "cake") {
     makeCake.call(this.parentNode)
   } else {
@@ -71,10 +72,12 @@ function makeDessert() {
 }
 
 function serve(message, customer) {
+  //you shouldn't need to alter this function
   return(customer + ", your " + this.name + " is ready to eat! " + message)
 }
 
 document.addEventListener("DOMContentLoaded", function(event) {
+  //you shouldn't need to alter this function
   var cookLinks = document.getElementsByClassName("js-make")
   for(var i=0; i<cookLinks.length; i++) {
     cookLinks[i].addEventListener("click", makeDessert)
